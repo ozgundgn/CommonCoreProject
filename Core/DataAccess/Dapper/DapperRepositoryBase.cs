@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
@@ -22,56 +23,112 @@ namespace Core.DataAccess.Dapper
             _connString = ConnectionFactory.GetConnectionString();
 
         }
-        public void Add(TEntity entity)
+        public long Add(TEntity entity)
         {
-            using (TDbConnection conn = new TDbConnection())
+            try
             {
-                conn.ConnectionString = _connString;
-                conn.Open();
-                conn.Insert<TEntity>(entity);
+                using (TDbConnection conn = new TDbConnection())
+                {
+                    conn.ConnectionString = _connString;
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    return conn.Insert<TEntity>(entity);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
 
 
-        public void Delete(TEntity entity)
+        public bool Delete(TEntity entity)
         {
-            using (TDbConnection conn = new TDbConnection())
+            try
             {
-                conn.ConnectionString = _connString;
-                conn.Open();
-                conn.Delete<TEntity>(entity);
+                using (TDbConnection conn = new TDbConnection())
+                {
+                    conn.ConnectionString = _connString;
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    return conn.Delete<TEntity>(entity);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
 
-        public void Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
-            using (TDbConnection conn = new TDbConnection())
+            try
             {
-                conn.ConnectionString = _connString;
-                conn.Open();
-                conn.Update<TEntity>(entity);
+                using (TDbConnection conn = new TDbConnection())
+                {
+                    conn.ConnectionString = _connString;
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    return conn.Update<TEntity>(entity);
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> entity = null)
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
-            using (TDbConnection conn = new TDbConnection())
+            try
             {
-                conn.ConnectionString = _connString;
-                conn.Open();
-                return conn.GetAll<TEntity>().ToList();
+                using (TDbConnection conn = new TDbConnection())
+                {
+                    conn.ConnectionString = _connString;
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+                    return conn.GetAll<TEntity>().ToList();
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return default(List<TEntity>);
         }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> entity = null)
+        public TEntity Get(TEntity entity)
         {
-            using (TDbConnection conn = new TDbConnection())
+            try
             {
-                conn.ConnectionString = _connString;
-                conn.Open();
-                return conn.Get<TEntity>(entity);
-            }
-        }
+                using (TDbConnection conn = new TDbConnection())
+                {
+                    if (conn.State != ConnectionState.Open)
+                        conn.ConnectionString = _connString;
 
+                    conn.Open();
+
+                    return conn.Get<TEntity>(entity);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return default(TEntity);
+        }
     }
 }

@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace Core.AspectsOriented.Autofac.Validation
 {
-    public class ValidationAspect : Modelnterception
+    public class ValidationAspect : Modellnterception
     {
         private Type _validatorType;
         public ValidationAspect(Type validatorType)

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.AspectsOriented.Autofac.Caching
 {
-    public class CachingAspect : Modelnterception
+    public class CachingAspect : Modellnterception
     {
         private int _duration;
         private ICacheManager _cacheManager;

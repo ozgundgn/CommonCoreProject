@@ -6,7 +6,7 @@ using Castle.DynamicProxy;
 
 namespace Core.Utilities.Interceptors
 {
-    public class Modelnterception:ModelIntercepitonBaseAttribute
+    public class Modellnterception:ModelIntercepitonBaseAttribute
     {
         protected virtual void OnBefore(IInvocation invocation) { }
         protected virtual void OnAfter(IInvocation invocation) { }

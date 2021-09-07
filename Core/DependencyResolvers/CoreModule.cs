@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.DependencyResolvers
 {
-   public class CoreModule:ICoreModule // autofac değil microsof dependency inj.
+   public class CoreModule:ICoreModule // autofac değil microsoft dependency inj.
     {
         public void Load(IServiceCollection serviceCollection)
         {

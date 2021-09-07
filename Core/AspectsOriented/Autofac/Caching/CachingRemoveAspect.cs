@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.AspectsOriented.Autofac.Caching
 {
-    public class CachingRemoveAspect : Modelnterception
+    public class CachingRemoveAspect : Modellnterception
     {
         private ICacheManager _cacheManager;
         private string _pattern;

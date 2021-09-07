@@ -13,7 +13,7 @@ namespace Core.DataAccess
         public static string GetConnectionString()
         {
             //return db connectionstring
-            return "";
+            return @"Server=OZGUN;Database=Northwind;Trusted_Connection=true";
         }
 
     }
