@@ -2,9 +2,12 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using Business.Concrete;
+using Core.DataAccess.Nhibernate;
 using Core.Utilities.Results;
 using DataAccess.Concrete;
 using DataAccess.Concrete.Dapper;
+using DataAccess.Concrete.EntityFramework;
+using DataAccess.Concrete.Nhibernate;
 using Entities.Concrete;
 
 namespace ConsoleUI
@@ -13,34 +16,28 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            OrderManager orderManager;
+
             #region Dapper
 
             //OrderManager orderManager = new OrderManager(new DapperOrderDal());
-            //GetOrderDetailsConsole(orderManager);
-
-            //var order = new Order()
-            //{ CustomerID = "ALFKI", OrderDate = DateTime.Now.AddDays(1), ShippedDate = DateTime.Now.AddMonths(1) };
-            //AddOrderConsole(orderManager, order);
-
-            //var order = new Order()
-            //{ CustomerID = "ALFKI", OrderDate = DateTime.Now.AddDays(1), ShippedDate = DateTime.Now.AddMonths(1), ShipName = "helehele", OrderID = 11078 };
-            //UpdateOrderConsole(orderManager, order);
-
-            //var result = DeleteOrderConsole(orderManager, 11078); 
             #endregion
 
             #region EntityFramework
-            OrderManager orderManager = new OrderManager(new EfOrderDal());
-            //GetAllOrderConsole(orderManager);
+            orderManager = new OrderManager(new EfOrderDal());
+            #endregion
 
-            //var order = new Order(){ CustomerID = "ALFKI", OrderDate = DateTime.Now.AddDays(1), ShippedDate = DateTime.Now.AddMonths(1) ,ShipName = "denemef"};
+           
+            GetAllOrderConsole(orderManager);
+
+            //var order = new Order() { CustomerID = "ALFKI", OrderDate = DateTime.Now.AddDays(1), ShippedDate = DateTime.Now.AddMonths(1), ShipName = "nhibernategemisi" };
             //AddOrderConsole(orderManager, order);
 
             //var order = new Order()
             //{ CustomerID = "ALFKI", OrderDate = DateTime.Now.AddDays(1), ShippedDate = DateTime.Now.AddMonths(1), ShipName = "helehele", OrderID = 11079 };
             //UpdateOrderConsole(orderManager, order);
 
-            //var result = DeleteOrderConsole(orderManager, 11079); 
+            //var result = DeleteOrderConsole(orderManager, 11079);
 
             var list = orderManager.GetAllByShippedName("Toms").Data;
             foreach (var item in list)
@@ -48,8 +45,11 @@ namespace ConsoleUI
                 Console.WriteLine(item.ShipName);
             }
 
-            #endregion
+          
         }
+
+
+
 
         #region Show Data
         public static void GetAllOrderConsole(OrderManager manager)
@@ -72,7 +72,7 @@ namespace ConsoleUI
                 Console.WriteLine(sonuc);
             }
         }
-        public static IDataResult<long> AddOrderConsole(OrderManager manager, Order newOrder)
+        public static IResult AddOrderConsole(OrderManager manager, Order newOrder)
         {
             return manager.Add(newOrder);
         }

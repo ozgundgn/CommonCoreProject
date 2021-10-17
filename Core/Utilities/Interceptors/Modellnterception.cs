@@ -13,7 +13,7 @@ namespace Core.Utilities.Interceptors
         protected virtual void OnException(IInvocation invocation) { }
         protected virtual void OnSuccess(IInvocation invocation) { }
 
-        public override void Intercept(IInvocation invocation) //invocation indicate each methods 
+        public override void Intercept(IInvocation invocation) //invocation indicates each methods 
         {
             bool isSuccess = true;
             OnBefore(invocation);

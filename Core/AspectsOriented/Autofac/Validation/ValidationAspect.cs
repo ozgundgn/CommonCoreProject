@@ -25,7 +25,7 @@ namespace Core.AspectsOriented.Autofac.Validation
         protected override void OnBefore(IInvocation invocation)
         {
             var validator = (IValidator)Activator.CreateInstance(_validatorType);
-            var entitiesType = _validatorType.BaseType.GetGenericArguments()[0]; // IValidator da türeyene classın oluşturulduğu base type
+            var entitiesType = _validatorType.BaseType.GetGenericArguments()[0]; // IValidator dan türeyen classın oluşturulduğu base type
             var entities = invocation.Arguments.Where(c => c.GetType() == entitiesType);
 
             foreach (var entity in entities) //model içindeki her bir propertinin doğruluğunu kontrol edecek
