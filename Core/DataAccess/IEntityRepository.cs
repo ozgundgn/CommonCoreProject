@@ -7,12 +7,12 @@ namespace Core.DataAccess
 {
     public interface IEntityRepository<T> where T : class, IEntity, new()
     {
-        long Add(T entity);
-        bool Delete(T entity);
-        bool Update(T entity);
+        long? Add(T entity);
+        bool? Delete(T entity);
+        bool? Update(T entity);
         List<T> GetAll(Expression<Func<T, bool>> filter = null);
 
-        public virtual T Get(Expression<Func<T, bool>> filter)
+        T Get(Expression<Func<T, bool>> filter)
         {
             return default(T);
         }

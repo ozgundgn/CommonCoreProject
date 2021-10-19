@@ -23,7 +23,7 @@ namespace Core.DataAccess.Dapper
             _connString = ConnectionFactory.GetConnectionString();
 
         }
-        public long Add(TEntity entity)
+        public long? Add(TEntity entity)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Core.DataAccess.Dapper
         }
 
 
-        public bool Delete(TEntity entity)
+        public bool? Delete(TEntity entity)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Core.DataAccess.Dapper
 
         }
 
-        public bool Update(TEntity entity)
+        public bool? Update(TEntity entity)
         {
             try
             {
@@ -105,7 +105,6 @@ namespace Core.DataAccess.Dapper
                 Console.WriteLine(e);
                 throw;
             }
-            return default(List<TEntity>);
         }
 
         public TEntity Get(TEntity entity)
@@ -127,8 +126,7 @@ namespace Core.DataAccess.Dapper
                 Console.WriteLine(e);
                 throw;
             }
-
-            return default(TEntity);
+            
         }
     }
 }

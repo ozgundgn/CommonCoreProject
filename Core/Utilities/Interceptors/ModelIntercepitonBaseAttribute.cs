@@ -8,7 +8,7 @@ namespace Core.Utilities.Interceptors
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public abstract class ModelIntercepitonBaseAttribute : Attribute, IInterceptor
     {
-        //public int? Priority { get; set; }
+        public int? Priority { get; set; }
         public virtual void Intercept(IInvocation invocation)
         {
         }

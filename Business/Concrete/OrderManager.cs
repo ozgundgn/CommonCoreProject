@@ -4,9 +4,12 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.ValidationRules.FluentValidation;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Core.AspectsOriented.Autofac.Validation;
 using DataAccess.Abstract;
 using Entities.DTOs;
+using FluentValidation;
 
 namespace Business.Concrete
 {
@@ -18,19 +21,28 @@ namespace Business.Concrete
         {
             _orderDal = orderDal;
         }
-        public IDataResult<long> Add(Order order)
+        [ValidationAspect(typeof(OrderValidator))]
+        public IResult Add(Order order)
         {
+
+            //var context = new ValidationContext<Order>(order);
+            //OrderValidator orderValidator = new OrderValidator();
+            //var result = orderValidator.Validate(context);
+            //if (!result.IsValid)
+            //{
+            //    throw new ValidationException("");
+            //}
             var insertedID = _orderDal.Add(order);
             if (insertedID > 0)
-                return new SuccessDataResult<long>(insertedID, "Sipariş kaydedildi.");
+                return new SuccessResult( "Sipariş kaydedildi.");
 
-            return new ErrorDataResult<long>("Sipariş kaydedilmedi.");
+            return new ErrorResult("Sipariş kaydedilmedi.");
         }
 
         public IResult Delete(int id)
         {
-
-            if (_orderDal.Delete(new Order() { OrderID = id }))
+            var res = _orderDal.Delete(new Order() { OrderID = id });
+            if (res != null && (bool)res)
                 return new SuccessResult();
 
             return new ErrorResult();
@@ -39,7 +51,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Order>> GetAllByShippedName(string shippedName)
         {
-            var list = _orderDal.GetAll(x=>x.ShipName.Contains(shippedName));
+            var list = _orderDal.GetAll(x => x.ShipName.Contains(shippedName));
             return new SuccessDataResult<List<Order>>(list);
         }
 
@@ -51,7 +63,7 @@ namespace Business.Concrete
 
         public IDataResult<Order> GetById(int orderId)
         {
-            var order = _orderDal.Get(new Order() { OrderID = orderId });
+            var order = _orderDal.Get(t=>t.OrderID==orderId);
             return new SuccessDataResult<Order>(order);
         }
         public IDataResult<Order> Get(Order order)
