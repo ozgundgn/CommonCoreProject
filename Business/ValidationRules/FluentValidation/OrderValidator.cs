@@ -11,7 +11,7 @@ namespace Business.ValidationRules.FluentValidation
        public OrderValidator()
        {
            RuleFor(p => p.ShipName).NotEmpty();
-           RuleFor(p => p.Freight).LessThan(100);
+           RuleFor(p => p.Freight).LessThan(5);
            RuleFor(p => p.ShipName).Must(StartWithA);
        }
 

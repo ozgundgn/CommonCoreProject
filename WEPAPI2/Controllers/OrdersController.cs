@@ -25,5 +25,18 @@ namespace WEPAPI2.Controllers
         {
             return _orderService.GetById(id).Data;
         }
+
+        [HttpPost]
+        public IActionResult Add(Order order)
+        {
+            var result = _orderService.Add(order);
+            if (result.Success)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
     }
 }

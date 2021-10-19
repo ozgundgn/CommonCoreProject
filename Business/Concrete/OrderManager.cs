@@ -25,13 +25,13 @@ namespace Business.Concrete
         public IResult Add(Order order)
         {
 
-            var context = new ValidationContext<Order>(order);
-            OrderValidator orderValidator = new OrderValidator();
-            var result = orderValidator.Validate(context);
-            if (!result.IsValid)
-            {
-                throw new ValidationException("");
-            }
+            //var context = new ValidationContext<Order>(order);
+            //OrderValidator orderValidator = new OrderValidator();
+            //var result = orderValidator.Validate(context);
+            //if (!result.IsValid)
+            //{
+            //    throw new ValidationException("");
+            //}
             var insertedID = _orderDal.Add(order);
             if (insertedID > 0)
                 return new SuccessResult( "Sipariş kaydedildi.");
