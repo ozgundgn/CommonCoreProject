@@ -7,6 +7,7 @@ using System.Text;
 using Business.ValidationRules.FluentValidation;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Core.AspectsOriented.Autofac.Validation;
+using Core.Utilities.BusinessRules;
 using DataAccess.Abstract;
 using Entities.DTOs;
 using FluentValidation;
@@ -32,6 +33,8 @@ namespace Business.Concrete
             //{
             //    throw new ValidationException("");
             //}
+            //İş mantığı yazılma şekli Core da IResult dönen bir method
+            //IResult result = BusinessRules.Run(CheckIfShipNameExists(order.ShipName),CheckIfCountFreightIsCorrect(order.Freight));
             var insertedID = _orderDal.Add(order);
             if (insertedID > 0)
                 return new SuccessResult( "Sipariş kaydedildi.");
@@ -51,6 +54,8 @@ namespace Business.Concrete
 
         public IDataResult<List<Order>> GetAllByShippedName(string shippedName)
         {
+
+
             var list = _orderDal.GetAll(x => x.ShipName.Contains(shippedName));
             return new SuccessDataResult<List<Order>>(list);
         }
