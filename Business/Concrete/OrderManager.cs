@@ -4,6 +4,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Core.AspectsOriented.Autofac.Validation;
@@ -22,6 +23,7 @@ namespace Business.Concrete
         {
             _orderDal = orderDal;
         }
+        [SecuredOperation("order.add")]
         [ValidationAspect(typeof(OrderValidator))]
         public IResult Add(Order order)
         {
