@@ -1,8 +1,12 @@
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,8 +27,7 @@ namespace WEPAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-
+            
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -41,6 +44,11 @@ namespace WEPAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
+            services.AddDependencyResolvers(new ICoreModule[]
+            {
+                new CoreModule()
+            });//yazdýðýmýz modullerý (coremodule gibi) istedeðimiz kadar ekleyebiliriz
+            //ServiceTool.Create(services);//autofac e tanýttýk serviceleri geçici çözümdü coremodule olmadan önce yazýldý.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

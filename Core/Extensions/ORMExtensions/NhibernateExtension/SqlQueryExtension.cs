@@ -11,7 +11,7 @@ using NHibernate.Type;
 
 namespace Core.Extensions.ORMExtensions.NhibernateExtension
 {
-    public static class SqlQueryException
+    public static class SqlQueryExtension
     {
         public static ISQLQuery AddScalars<TModel>(this ISQLQuery sqlQuery, Expression<Func<TModel, object>> excludedProperties = null, Expression<Func<TModel, object>> onlyIncludedProperties = null) where TModel : class, new()
         {

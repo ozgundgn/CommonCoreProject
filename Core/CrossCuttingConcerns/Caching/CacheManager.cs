@@ -33,7 +33,7 @@ namespace Core.CrossCuttingConcerns.Caching
 
         public object Get(string key)
         {
-            return _memoryCache.Get(key);
+          return _memoryCache.Get(key);
         }
 
         public void Remove(string key)
@@ -44,18 +44,19 @@ namespace Core.CrossCuttingConcerns.Caching
         public void RemoveByPattern(string pattern)
         {
             var cacheEntriesCollectionDefinition = typeof(MemoryCache).GetProperty("EntriesCollection",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-            var cacheEntriesCollection = cacheEntriesCollectionDefinition.GetValue(_memoryCache) as dynamic;
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance); 
+            var cacheEntriesCollection = cacheEntriesCollectionDefinition.GetValue(_memoryCache) as dynamic; 
             List<ICacheEntry> cacheCollectionValues = new List<ICacheEntry>();
 
             foreach (var cacheItem in cacheEntriesCollection)
             {
-                ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("value").GetValue(cacheItem, null);
+                var b = cacheItem.GetType().GetProperty("Value");
+                ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
+                cacheCollectionValues.Add(cacheItemValue);
             }
 
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            var keysToRemove = cacheCollectionValues.Where(d => regex.IsMatch(d.Key.ToString()));
+            var keysToRemove = cacheCollectionValues.Where(d => regex.IsMatch(d.Key.ToString())).Select(d=>d.Key).ToList();
 
             foreach (var key in keysToRemove)
             {

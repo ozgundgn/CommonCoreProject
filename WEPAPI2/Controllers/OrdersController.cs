@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Core.AspectsOriented.Autofac.Caching;
+using Core.CrossCuttingConcerns.Caching;
 using Entities.Concrete;
 
 namespace WEPAPI2.Controllers
@@ -38,5 +40,12 @@ namespace WEPAPI2.Controllers
             return BadRequest();
         }
 
+        [HttpGet("getall")]
+        [CachingAspect]
+        public List<Order> GetAll()
+        {
+            var orderList = _orderService.GetAll();
+            return orderList.Data;
+        }
     }
 }

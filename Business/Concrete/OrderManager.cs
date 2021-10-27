@@ -7,11 +7,14 @@ using System.Text;
 using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Core.AspectsOriented.Autofac.Caching;
+using Core.AspectsOriented.Autofac.Logging;
 using Core.AspectsOriented.Autofac.Validation;
 using Core.Utilities.BusinessRules;
 using DataAccess.Abstract;
 using Entities.DTOs;
 using FluentValidation;
+using Core.AspectsOriented.Autofac.Transaction;
 
 namespace Business.Concrete
 {
@@ -23,8 +26,9 @@ namespace Business.Concrete
         {
             _orderDal = orderDal;
         }
-        [SecuredOperation("order.add")]
+        [SecuredOperation("order.add,admin")]
         [ValidationAspect(typeof(OrderValidator))]
+        [CachingRemoveAspect("IOrderService.Get")]
         public IResult Add(Order order)
         {
 
@@ -53,21 +57,19 @@ namespace Business.Concrete
             return new ErrorResult();
         }
 
-
+        [LoggingAspect(typeof(LoggingAspect))]
         public IDataResult<List<Order>> GetAllByShippedName(string shippedName)
         {
-
-
             var list = _orderDal.GetAll(x => x.ShipName.Contains(shippedName));
             return new SuccessDataResult<List<Order>>(list);
         }
-
+        [CachingAspect]
         public IDataResult<List<Order>> GetAll()
         {
             var list = _orderDal.GetAll();
             return new SuccessDataResult<List<Order>>(list);
         }
-
+        [CachingAspect]
         public IDataResult<Order> GetById(int orderId)
         {
             var order = _orderDal.Get(t=>t.OrderID==orderId);
@@ -89,6 +91,17 @@ namespace Business.Concrete
             var orderDetails = _orderDal.GetOrderDetails(sql);
 
             return new SuccessDataResult<List<OrderDetailDto>>(orderDetails);
+        }
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Order order)
+        {
+            Add(order);
+            if (order.Freight < 10)
+            {
+                throw new Exception("");
+            }
+            Add(order);
+            return null;
         }
     }
 }

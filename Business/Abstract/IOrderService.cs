@@ -16,5 +16,6 @@ namespace Business.Abstract
         IDataResult<Order> Get(Order order);
         IResult Delete(int id);
         IDataResult<List<OrderDetailDto>> GetOrderDetails(string sql);
+        IResult AddTransactionalTest(Order order);
     }
 }
