@@ -47,5 +47,18 @@ namespace WEPAPI2.Controllers
             var orderList = _orderService.GetAll();
             return orderList.Data;
         }
+        [HttpPost("transaction")]
+        public IActionResult TransactionalTest(Order order)
+        {
+            var result = _orderService.AddTransactionalTest(order);
+            return Ok();
+        }
+        [HttpGet("getbyship")]
+        public List<Order> GetAllByShipName(string name)
+        {
+            var result = _orderService.GetAllByShippedName(name);
+            return result.Data;
+        }
+
     }
 }

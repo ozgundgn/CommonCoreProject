@@ -15,6 +15,7 @@ using DataAccess.Abstract;
 using Entities.DTOs;
 using FluentValidation;
 using Core.AspectsOriented.Autofac.Transaction;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 
 namespace Business.Concrete
 {
@@ -57,7 +58,7 @@ namespace Business.Concrete
             return new ErrorResult();
         }
 
-        [LoggingAspect(typeof(LoggingAspect))]
+        [LoggingAspect(typeof(DatabaseLogger))]
         public IDataResult<List<Order>> GetAllByShippedName(string shippedName)
         {
             var list = _orderDal.GetAll(x => x.ShipName.Contains(shippedName));
@@ -95,12 +96,12 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         public IResult AddTransactionalTest(Order order)
         {
+            
             Add(order);
             if (order.Freight < 10)
             {
-                throw new Exception("");
+                throw new Exception("Freight alanı 10'dan küçük olamaz.");
             }
-            Add(order);
             return null;
         }
     }

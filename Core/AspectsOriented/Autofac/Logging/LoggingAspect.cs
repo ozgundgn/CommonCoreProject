@@ -5,6 +5,7 @@ using System.Text;
 using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.Log4Net;
+using Remotion.Linq.Clauses.ResultOperators;
 
 namespace Core.AspectsOriented.Autofac.Logging
 {
@@ -20,9 +21,8 @@ namespace Core.AspectsOriented.Autofac.Logging
 
             _loggingBaseService = (LoggingBaseService)Activator.CreateInstance(loggerClass);
         }
-        protected override void OnAfter(IInvocation invocation)
+        protected override void OnBefore(IInvocation invocation)
         {
-
             _loggingBaseService.Info(GetLogDetail(invocation));
         }
 
@@ -41,6 +41,12 @@ namespace Core.AspectsOriented.Autofac.Logging
                 });
             }
 
+            var logDetail= new LogDetail()
+            {
+                MethodName = invocation.Method.Name,
+                LogParameters = logParameters
+            };
+            return logDetail;
         }
     }
 
