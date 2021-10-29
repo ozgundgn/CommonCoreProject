@@ -48,6 +48,7 @@ namespace WEPAPI
             {
                 new CoreModule()
             });//yazdýðýmýz modullerý (coremodule gibi) istedeðimiz kadar ekleyebiliriz
+
             //ServiceTool.Create(services);//autofac e tanýttýk serviceleri geçici çözümdü coremodule olmadan önce yazýldý.
         }
 
@@ -60,7 +61,7 @@ namespace WEPAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.ConfigureExceptionMiddleware(); 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
