@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Core.CrossCuttingConcerns.Caching;
 using Core.Utilities.IoC;
@@ -9,13 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.DependencyResolvers
 {
-   public class CoreModule:ICoreModule // autofac değil microsoft dependency inj.
+    public class CoreModule : ICoreModule // autofac değil microsoft dependency inj.
     {
         public void Load(IServiceCollection serviceCollection)
         {
             serviceCollection.AddMemoryCache();// arkadaki IMemoryCache in karşılığını buradan alıyor memeorychche instance ı oluşuyor
-            serviceCollection.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
-            serviceCollection.AddSingleton<ICacheManager,CacheManager>();
+            serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            serviceCollection.AddSingleton<ICacheManager, CacheManager>();
+            serviceCollection.AddSingleton<Stopwatch>();
         }
     }
 }

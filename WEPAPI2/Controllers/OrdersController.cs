@@ -8,6 +8,7 @@ using Business.Abstract;
 using Core.AspectsOriented.Autofac.Caching;
 using Core.CrossCuttingConcerns.Caching;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace WEPAPI2.Controllers
 {
@@ -58,6 +59,13 @@ namespace WEPAPI2.Controllers
         {
             var result = _orderService.GetAllByShippedName(name);
             return result.Data;
+        }
+
+        [HttpGet("details")]
+
+        public List<OrderDetailDto> GetOrderDetails()
+        {
+           return _orderService.GetOrderDetails(null).Data;
         }
 
     }

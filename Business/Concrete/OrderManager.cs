@@ -8,7 +8,9 @@ using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Core.AspectsOriented.Autofac.Caching;
+using Core.AspectsOriented.Autofac.Exception;
 using Core.AspectsOriented.Autofac.Logging;
+using Core.AspectsOriented.Autofac.Performance;
 using Core.AspectsOriented.Autofac.Validation;
 using Core.Utilities.BusinessRules;
 using DataAccess.Abstract;
@@ -65,12 +67,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Order>>(list);
         }
         [CachingAspect]
+        [ExceptionLogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<Order>> GetAll()
         {
             var list = _orderDal.GetAll();
             return new SuccessDataResult<List<Order>>(list);
         }
         [CachingAspect]
+        [PerformanceAspect(30)]
         public IDataResult<Order> GetById(int orderId)
         {
             var order = _orderDal.Get(t=>t.OrderID==orderId);
@@ -87,9 +91,14 @@ namespace Business.Concrete
             _orderDal.Update(order);
             return new SuccessResult();
         }
+        [ExceptionLogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<OrderDetailDto>> GetOrderDetails(string sql)
         {
             var orderDetails = _orderDal.GetOrderDetails(sql);
+            var n = 0;
+            // ReSharper disable once IntDivisionByZero
+            var b = 1 / n;
+
 
             return new SuccessDataResult<List<OrderDetailDto>>(orderDetails);
         }

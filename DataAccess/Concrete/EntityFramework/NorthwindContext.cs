@@ -13,8 +13,8 @@ namespace DataAccess.Concrete.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var _connString = ConnectionFactory.GetConnectionString();
-            optionsBuilder.UseSqlServer(_connString);
+            var connString = ConnectionFactory.GetConnectionString();
+            optionsBuilder.UseSqlServer(connString);
         }
 
         public DbSet<Order> Orders { get; set; }

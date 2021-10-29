@@ -22,5 +22,6 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net.Layouts
             var json = JsonConvert.SerializeObject(logEvent, Newtonsoft.Json.Formatting.Indented);
             writer.WriteLine(json);
         }
+
     }
 }

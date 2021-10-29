@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System;
+using log4net;
 using log4net.Core;
 
 namespace Core.CrossCuttingConcerns.Logging.Log4Net
@@ -16,5 +17,7 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
         }
 
         public object Message => _loggingEvent.MessageObject;
+
+
     }
 }
